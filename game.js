@@ -1,68 +1,91 @@
 let playerWins = 0;
 let computerWins = 0;
 
+const buttons = document.querySelectorAll('button');
+
 getComputerChoice = () => {
     let rockPaperScissors = ["ROCK", "PAPER", "SCISSORS"];
     let rockPaperSciccorsChoice = rockPaperScissors[Math.floor(Math.random() * 3)];
     return rockPaperSciccorsChoice;    
 }
 
+disableButtons = () => {
+    buttons.forEach(button => {
+        button.disabled = true;
+    })
+}
+computerWinsScoreMessage = (message, computerSelection, playerSelection, playerWins, computerWins) => {
+    message = `Computer wins. ${computerSelection} beats ${playerSelection} \n Player Score: ${playerWins} Computer Score: ${computerWins}`;
+    console.log(message);
+    return message;
+}
+playerWinsScoreMessage = (message, computerSelection, playerSelection, playerWins, computerWins) => {
+    message += `You win! ${playerSelection} beats ${computerSelection} \n Player Score: ${playerWins} Computer Score: ${computerWins}`;
+    return message;
+}
 playRound = (playerSelection, computerSelection) => {
-    if ((playerSelection === "ROCK" && computerSelection === "ROCK") || (playerSelection === "PAPER" && computerSelection === "PAPER") || (playerSelection === "SCISSORS" && computerSelection === "SCISSORS")) {
-        alert("The game is a tie!");
+    playerSelection = playerSelection.toUpperCase();
+    console.log([playerSelection, computerSelection]);
+    let result = "";
+    if ((playerSelection === "ROCK" && computerSelection === "ROCK") || 
+        (playerSelection === "PAPER" && computerSelection === "PAPER") || 
+        (playerSelection === "SCISSORS" && computerSelection === "SCISSORS")) {
+            result += "Game is a tie. You both chose " + playerSelection + "\n Player Score:" + playerWins + " Computer Score: " + computerWins;
     }
     switch (playerSelection) {
         case "ROCK":
-            if (computerSelection === "PAPER") {
-                alert(`You Lose! ${computerSelection} beats ${playerSelection}`);
+            if (computerSelection === "PAPER") { 
                 computerWins += 1;
+                result += computerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             if (computerSelection === "SCISSORS") {
-                alert(`You Win! ${playerSelection} beats ${computerSelection}`);
-                playerWins +=1 ;
+                playerWins += 1;
+                result += playerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             break;
         case "PAPER":
             if (computerSelection === "ROCK") {
-                alert(`You Win! ${playerSelection} beats ${computerSelection}`);
-                playerWins +=1 ;
+                playerWins += 1;
+                result += playerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             if (computerSelection === "SCISSORS") {
-                alert(`You Lose! ${computerSelection} beats ${playerSelection}`);
                 computerWins += 1;
+                result += computerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             break;
         case "SCISSORS":
             if (computerSelection === "ROCK") {
-                alert(`You Lose! ${computerSelection} beats ${playerSelection}`);
                 computerWins += 1;
-
-            }
+                result += computerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
+           }
             if (computerSelection === "PAPER") {
-                alert(`You Win! ${playerSelection} beats ${computerSelection}`);
-                playerWins +=1 ;
+                playerWins += 1;
+                result += playerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             break;
         default:
     }
+    document.getElementById('results').innerText = result;
+
+    if (playerWins === 5) {
+        alert ("YOU WIN!!!");
+        disableButtons();
+    }
+    else if (computerWins === 5) {
+        alert("YOU LOSE!");
+        disableButtons();
+    }
+    return
 }
 
+
 game = () => {
-    for (let i = 0; i<5; i++) {
-        let playerSelection = prompt("Type 'ROCK', 'PAPER' or 'SCISSORS' to play!");
-        playerSelection = playerSelection.toUpperCase();
-        const computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection); 
-    }
-    if (playerWins > computerWins) {
-        alert(`You are the winner! You won ${playerWins} times!`);
-    }
-    else if (computerWins > playerWins) {
-        alert(`You are the loser! The computer won ${computerWins} times!`);
-    }
-    else if (playerWins === computerWins) {
-        alert('The game is a draw!!');
-    }
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            playRound(button.id, getComputerChoice());
+        });
+    });   
 }
 
 game();
