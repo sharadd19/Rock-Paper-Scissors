@@ -2,9 +2,12 @@ let playerWins = 0;
 let computerWins = 0;
 
 const buttons = document.querySelectorAll('button');
+const rock = "ROCK";
+const paper = "PAPER";
+const scissors = "SCISSORS";
 
 getComputerChoice = () => {
-    let rockPaperScissors = ["ROCK", "PAPER", "SCISSORS"];
+    let rockPaperScissors = [rock, paper, scissors];
     let rockPaperSciccorsChoice = rockPaperScissors[Math.floor(Math.random() * 3)];
     return rockPaperSciccorsChoice;    
 }
@@ -27,38 +30,38 @@ playRound = (playerSelection, computerSelection) => {
     playerSelection = playerSelection.toUpperCase();
     console.log([playerSelection, computerSelection]);
     let result = "";
-    if ((playerSelection === "ROCK" && computerSelection === "ROCK") || 
-        (playerSelection === "PAPER" && computerSelection === "PAPER") || 
-        (playerSelection === "SCISSORS" && computerSelection === "SCISSORS")) {
+    if ((playerSelection === rock && computerSelection === rock) || 
+        (playerSelection === paper && computerSelection === paper) || 
+        (playerSelection === scissors && computerSelection === scissors)) {
             result += "Game is a tie. You both chose " + playerSelection + "\n Player Score:" + playerWins + " Computer Score: " + computerWins;
     }
     switch (playerSelection) {
-        case "ROCK":
-            if (computerSelection === "PAPER") { 
+        case rock:
+            if (computerSelection === paper) { 
                 computerWins += 1;
                 result += computerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
-            if (computerSelection === "SCISSORS") {
+            if (computerSelection === scissors) {
                 playerWins += 1;
                 result += playerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             break;
-        case "PAPER":
-            if (computerSelection === "ROCK") {
+        case paper:
+            if (computerSelection === rock) {
                 playerWins += 1;
                 result += playerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
-            if (computerSelection === "SCISSORS") {
+            if (computerSelection === scissors) {
                 computerWins += 1;
                 result += computerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
             break;
-        case "SCISSORS":
-            if (computerSelection === "ROCK") {
+        case scissors:
+            if (computerSelection === rock) {
                 computerWins += 1;
                 result += computerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
            }
-            if (computerSelection === "PAPER") {
+            if (computerSelection === paper) {
                 playerWins += 1;
                 result += playerWinsScoreMessage(message="", computerSelection, playerSelection, playerWins, computerWins);
             }
